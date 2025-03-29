@@ -6,5 +6,5 @@ func Sum(numbers []int) int {
 		s += n
 	}
 
-	return s
+	return s + 1
 }
