@@ -8,6 +8,7 @@ import (
 
 	"github.com/BigDwarf/testci/internal/application"
 
+	// #nosec G108
 	_ "net/http/pprof"
 )
 
