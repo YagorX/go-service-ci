@@ -1,0 +1,78 @@
+version: "2"
+
+run:
+  go: "1.24"
+  tests: false
+
+output:
+  formats:
+    tab:
+      path: stdout
+
+linters:
+  default: all
+  disable:
+    - depguard
+    - exhaustruct
+    - gosec
+    - mnd
+    - musttag
+    - wsl
+    - inamedparam
+    - revive
+    - funlen
+    - gochecknoglobals
+    - godot
+    - godox
+    - ireturn
+    - nolintlint
+    - nonamedreturns
+    - perfsprint
+    - tagalign
+    - tagliatelle
+    - testpackage
+    - varnamelen
+    - wrapcheck
+    - intrange
+    - gochecknoglobals
+  # deprecated
+  # - wsl
+
+linters-settings:
+  revive:
+    severity: error
+    rules:
+      - name: import-alias-naming
+        severity: error
+        arguments:
+          - "^[a-z][a-z0-9]*$"
+      - name: unhandled-error
+        arguments:
+          - fmt.Printf
+          - fmt.Println
+          - myFunction
+      - name: exported
+        disabled: true
+        
+  depguard:
+    rules:
+      main:
+        files:
+          - "**/*.go"
+        config: .depguard.yml
+
+  goconst:
+    min-len: 2
+    min-occurrences: 2
+
+  gocritic:
+    enable-all: true
+    disabled-checks:
+      - ifElseChain
+      - whyNoLint
+
+  govet:
+    settings:
+      rangeValCopy:
+        sizeThreshold: 128
+        skipTestFuncs: false

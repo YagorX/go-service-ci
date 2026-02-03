@@ -1,0 +1,54 @@
+version: 3
+
+allow:
+  depOnAnyVendor: true
+
+exclude:
+  - "api/**"
+  - "cmd/**"
+  - "version"
+
+excludeFiles:
+  - ".*_test\\.go$"
+  - ".*_gen\\.go$"
+  - "migrations\\.go"
+  - ".*pb\\.go$"
+
+components:
+  version: { in: version }
+  pkg: { in: pkg/** }
+  errors: { in: internal/errors }
+  app: { in: internal/application }
+  config: { in: internal/config }
+  transport: { in: internal/transport/** }
+  service: { in: internal/service/** }
+  adaptor: { in: internal/adaptor/** }
+  model: { in: internal/model/** }
+  repository: { in: internal/repository/** }
+
+commonComponents:
+  - pkg
+  - errors
+  - model
+
+deps:
+  config:
+    mayDependOn:
+      - version
+
+  app:
+    mayDependOn:
+      - config
+      - transport
+      - service
+      - adaptor
+      - repository
+
+  transport:
+    mayDependOn:
+      - service
+      - adaptor
+
+  service:
+    mayDependOn:
+      - repository

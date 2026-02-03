@@ -1,0 +1,24 @@
+# git
+.git
+.gitignore
+
+# IDE / editor
+.idea
+.vscode
+
+# binaries
+bin/
+out/
+*.exe
+
+# tests / coverage
+*.out
+coverage.*
+
+# env / secrets
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:16.2
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+      - PGPORT=7432
+    ports:
+      - "7432:7432"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: '4G'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7.0.14-alpine
+    hostname: redis
+    command: --port 7379
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+    restart: always
+    ports:
+      - "7379:7379"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: '4G'
+    environment:
+      - REDIS_PASSWORD=password
+      - REDIS_PORT_NUMBER=7379
+      - REDIS_DATABASES=4
+
+  prometheus:
+    image: prom/prometheus:v2.45.3
+    ports:
+      - 9090
+    volumes:
+      - ./assets/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+  grafana:
+    image: grafana/grafana:10.3.1
+    ports:
+      - 3000:3000
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=secret
+    volumes:
+      - ./assets/grafana/provisioning:/etc/grafana/provisioning
+      - ./assets/grafana/dashboards:/var/lib/grafana/dashboards
