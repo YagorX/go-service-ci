@@ -3,6 +3,7 @@ package application
 import (
 	"context"
 	"database/sql"
+
 	"github.com/BigDwarf/testci/internal/model"
 	"github.com/BigDwarf/testci/internal/repository/satellite"
 	"github.com/BigDwarf/testci/internal/service/cache"
@@ -47,7 +48,7 @@ func (app *App) Start() error {
 func (app *App) Stop(ctx context.Context) {
 	err := app.srv.Shutdown(ctx)
 	if err != nil {
-		log.Error(err.Error())
+		log.Info(err)
 	}
 }
 
