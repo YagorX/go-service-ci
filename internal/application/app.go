@@ -39,7 +39,8 @@ func (app *App) Start() error {
 
 	go func() {
 		if err := app.srv.Start(app.cfg.HttpServerConfig.ListenAddress); err != nil {
-			log.Fatal(err)
+			fmt.Println("error not null, ", err.Error())
+			log.Info(err)
 		}
 	}()
 
