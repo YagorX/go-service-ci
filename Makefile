@@ -1,7 +1,7 @@
 .PHONY: lint test build docker-build docker-push docker-run test-integration
 
 GITHUB_USER ?= yagorx
-IMAGE_NAME ?= ghcr.io/$(shell echo $(GITHUB_USER) | tr '[:upper:]' '[:lower:]')/go-ci-cd-demo
+IMAGE_NAME ?= ghcr.io/$(shell echo $(GITHUB_USER) | tr '[:upper:]' '[:lower:]')/go-service-ci
 IMAGE_TAG ?= local
 PLATFORM ?= linux/amd64
 
