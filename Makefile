@@ -11,7 +11,7 @@ BIN_DIR := bin
 lint:
 	golangci-lint run -v
 
-unit_test:
+unit-test:
 	go test ./... -coverprofile=coverage.out
 	go tool cover -func=coverage.out
 
