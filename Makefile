@@ -16,11 +16,12 @@ unit-test:
 	go tool cover -func=coverage.out
 
 test-integration:
-	docker compose -f ./test/docker-compose-test.yml up
+	docker compose -f ./test/docker-compose-test.yml up -d --wait
 	go test --tags=test_integration ./test/...
+	docker compose -f ./test/docker-compose-test.yml down
 
 build:
-	go build -o $(BIN_DIR)/$(APP_NAME).exe
+	go build -o $(BIN_DIR)/$(APP_NAME) ./cmd
 
 docker-build:
 	docker buildx build \
