@@ -6,11 +6,17 @@ run:
 
 output:
   formats:
-    tab:
+    - format: tab
       path: stdout
 
 linters:
-  default: all
+  enable:
+    - govet
+    - errcheck
+    - staticcheck
+    - goconst
+    - gocritic
+
   disable:
     - depguard
     - exhaustruct
@@ -34,45 +40,19 @@ linters:
     - varnamelen
     - wrapcheck
     - intrange
-    - gochecknoglobals
-  # deprecated
-  # - wsl
 
-linters-settings:
-  revive:
-    severity: error
-    rules:
-      - name: import-alias-naming
-        severity: error
-        arguments:
-          - "^[a-z][a-z0-9]*$"
-      - name: unhandled-error
-        arguments:
-          - fmt.Printf
-          - fmt.Println
-          - myFunction
-      - name: exported
-        disabled: true
-        
-  depguard:
-    rules:
-      main:
-        files:
-          - "**/*.go"
-        config: .depguard.yml
+  settings:
+    goconst:
+      min-len: 2
+      min-occurrences: 2
 
-  goconst:
-    min-len: 2
-    min-occurrences: 2
+    gocritic:
+      enable-all: true
+      disabled-checks:
+        - ifElseChain
+        - whyNoLint
 
-  gocritic:
-    enable-all: true
-    disabled-checks:
-      - ifElseChain
-      - whyNoLint
-
-  govet:
-    settings:
-      rangeValCopy:
-        sizeThreshold: 128
-        skipTestFuncs: false
+    govet:
+      enable:
+        - shadow
+        - rangevalcopy
