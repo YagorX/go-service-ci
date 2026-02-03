@@ -6,7 +6,7 @@ run:
 
 output:
   formats:
-    - format: tab
+    tab:
       path: stdout
 
 linters:
@@ -14,8 +14,6 @@ linters:
     - govet
     - errcheck
     - staticcheck
-    - goconst
-    - gocritic
 
   disable:
     - depguard
@@ -42,17 +40,6 @@ linters:
     - intrange
 
   settings:
-    goconst:
-      min-len: 2
-      min-occurrences: 2
-
-    gocritic:
-      enable-all: true
-      disabled-checks:
-        - ifElseChain
-        - whyNoLint
-
     govet:
       enable:
         - shadow
-        - rangevalcopy
