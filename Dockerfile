@@ -14,7 +14,7 @@ ARG TARGETOS
 ARG TARGETARCH
 
 RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH \
-    go build -trimpath -ldflags="-s -w" -o app
+    go build -trimpath -ldflags="-s -w" -o app ./cmd
 
 # runtime
 FROM gcr.io/distroless/base-debian12
