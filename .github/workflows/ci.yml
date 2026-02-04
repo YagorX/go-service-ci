@@ -20,7 +20,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.23'
+          go-version: '1.24'
 
       - name: Install golangci-lint v2
         run: |
@@ -48,7 +48,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.23'
+          go-version: '1.24'
 
       - name: Run unit tests with coverage
         run: make unit-test
@@ -65,7 +65,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.23'
+          go-version: '1.24'
 
       # ⚠️ Docker нужен для docker-compose
       - name: Set up Docker
@@ -85,7 +85,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.23'
+          go-version: '1.24'
 
       - name: Install gosec
         run: go install github.com/securego/gosec/v2/cmd/gosec@latest
@@ -109,7 +109,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.23'
+          go-version: '1.24'
 
       - name: Build application
         run: make build
