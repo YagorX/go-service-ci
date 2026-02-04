@@ -113,21 +113,24 @@ jobs:
 
       - name: Build application
         run: make build
-  
+    
   login_push:
-        # TODO: условия при которых делать push
-        name: LoginAndPush
-        runs-on: ubuntu-latest
-        needs: [build, security, integration-test, unit-test, lint]
+    name: LoginAndPush
+    runs-on: ubuntu-latest
+    needs: [build, security, integration-test, unit-test, lint]
 
-        steps:
-        - name: Login to GHCR
-          run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Login to GHCR
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-        - name: Build and push Docker image
-          env:
-            GITHUB_USER: ${{ github.repository_owner }}
-            IMAGE_TAG: ${{ github.sha }}
-          run: |
-            make docker-build
-            make docker-push
+    - name: Build and push Docker image
+      env:
+          GITHUB_USER: ${{ github.repository_owner }}
+          IMAGE_TAG: ${{ github.sha }}
+      run: |
+        make docker-build
+        make docker-push
+
