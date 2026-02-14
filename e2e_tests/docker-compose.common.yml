@@ -1,0 +1,39 @@
+services:
+  postgres: &postgres
+    image: postgres:16.8-alpine
+    profiles: [ci]
+    hostname: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - ../test/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis: &redis
+    image: redis:7.2-alpine
+    profiles: [ci]
+    hostname: redis
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  postgres-local:
+    <<: *postgres
+    profiles: [local]
+    ports:
+      - "8432:5432"
+
+  redis-local:
+    <<: *redis
+    profiles: [local]
+    ports:
+      - "8379:6379"

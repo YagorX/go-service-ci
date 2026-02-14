@@ -2,11 +2,14 @@ package config
 
 import (
 	"fmt"
+	"os"
+	"strconv"
 )
 
 type Config struct {
 	HttpServerConfig HttpServerConfig
 	Database         Database
+	RedisAddr        string
 }
 
 type HttpServerConfig struct {
@@ -39,16 +42,39 @@ func (d *Database) GetDSN() string {
 func NewDefaultConfig() *Config {
 	return &Config{
 		HttpServerConfig: HttpServerConfig{
-			ListenAddress: "0.0.0.0:10080",
+			ListenAddress: getEnv("APP_HTTP_ADDR", "0.0.0.0:10080"),
 		},
 		Database: Database{
-			Hosts:    "localhost",
-			Port:     8432,
-			User:     "postgres",
-			Name:     "postgres",
-			Password: "postgres",
-			SSLMode:  "disable",
-			Schema:   "public",
+			Hosts:    getEnv("APP_DB_HOST", "localhost"),
+			Port:     getEnvAsInt("APP_DB_PORT", 8432),
+			User:     getEnv("APP_DB_USER", "postgres"),
+			Name:     getEnv("APP_DB_NAME", "postgres"),
+			Password: getEnv("APP_DB_PASSWORD", "postgres"),
+			SSLMode:  getEnv("APP_DB_SSLMODE", "disable"),
+			Schema:   getEnv("APP_DB_SCHEMA", "public"),
 		},
+		RedisAddr: getEnv("APP_REDIS_ADDR", ":8379"),
 	}
+}
+
+func getEnv(key, fallback string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+
+	return fallback
+}
+
+func getEnvAsInt(key string, fallback int) int {
+	value, ok := os.LookupEnv(key)
+	if !ok {
+		return fallback
+	}
+
+	parsed, err := strconv.Atoi(value)
+	if err != nil {
+		return fallback
+	}
+
+	return parsed
 }

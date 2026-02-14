@@ -1,0 +1,56 @@
+include:
+  - docker-compose.common.yml
+
+services:
+  app:
+    profiles: [ci]
+    image: ${IMAGE_NAME}:${IMAGE_TAG}
+    pull_policy: always
+    hostname: app
+    ports:
+      - "10080:10080"
+    env_file:
+      - ../.env
+    environment:
+      APP_HTTP_ADDR: "0.0.0.0:10080"
+      APP_DB_HOST: "postgres"
+      APP_DB_PORT: "5432"
+      APP_REDIS_ADDR: "redis:6379"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  app-local:
+    profiles: [local]
+    image: ${IMAGE_NAME}:${IMAGE_TAG}
+    pull_policy: always
+    hostname: app-local
+    ports:
+      - "10080:10080"
+    env_file:
+      - ../.env
+    environment:
+      APP_HTTP_ADDR: "0.0.0.0:10080"
+      APP_DB_HOST: "postgres-local"
+      APP_DB_PORT: "5432"
+      APP_REDIS_ADDR: "redis-local:6379"
+    depends_on:
+      postgres-local:
+        condition: service_healthy
+      redis-local:
+        condition: service_healthy
+
+  tests:
+    profiles: [ci]
+    build:
+      context: ..
+      dockerfile: e2e_tests/Dockerfile_compose
+    env_file:
+      - ../.env
+    environment:
+      APP_URL: "http://app:10080"
+    depends_on:
+      app:
+        condition: service_started

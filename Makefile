@@ -1,4 +1,4 @@
-.PHONY: lint test build docker-build docker-push docker-run test-integration
+.PHONY: lint test build docker-build docker-push docker-run test-integration e2e-up-local e2e-down-local e2e-up-ci e2e-down-ci test-e2e-docker
 
 GITHUB_USER ?= yagorx
 IMAGE_NAME ?= ghcr.io/$(shell echo $(GITHUB_USER) | tr '[:upper:]' '[:lower:]')/go-service-ci
@@ -41,3 +41,17 @@ docker-compose-up:
 docker-compose-down:
 	docker compose down
 
+e2e-up-local:
+	./scripts/up-local.sh
+
+e2e-down-local:
+	docker compose --env-file ./.env -f e2e_tests/docker-compose.e2e.yml --profile local down -v
+
+e2e-up-ci:
+	docker compose --env-file ./.env -f e2e_tests/docker-compose.e2e.yml --profile ci up -d --wait app
+
+e2e-down-ci:
+	docker compose --env-file ./.env -f e2e_tests/docker-compose.e2e.yml --profile ci down -v
+
+test-e2e-docker:
+	./scripts/up-e2e.sh

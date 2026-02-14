@@ -21,8 +21,9 @@ import (
 type App struct {
 	cfg *config.Config
 
-	db  *sql.DB
-	srv *echo.Echo
+	db          *sql.DB
+	redisClient *redis.Client
+	srv         *echo.Echo
 }
 
 func NewApp() *App {
@@ -58,7 +59,9 @@ func (app *App) Stop(ctx context.Context) {
 func (app *App) RegisterRoutes() {
 	g := app.srv.Group("/api/v1/satellite")
 	db := app.Database(app.cfg.Database.GetDSN())
-	satelliteCache := cache.New[*model.Satellite](redis.NewClient(&redis.Options{Addr: ":8379"}))
+	app.redisClient = redis.NewClient(&redis.Options{Addr: app.cfg.RedisAddr})
+	satelliteCache := cache.New[*model.Satellite](app.redisClient)
 
 	v1.NewController(g, satelliteService.NewService(satellite.NewRepository(db), satelliteCache))
+	app.registerHealthRoutes()
 }
