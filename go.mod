@@ -1,6 +1,5 @@
 module github.com/YagorX/go-service-ci
 
-
 go 1.24
 
 toolchain go1.24.13

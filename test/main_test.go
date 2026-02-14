@@ -8,7 +8,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/BigDwarf/testci/internal/application"
+	"github.com/YagorX/go-service-ci/internal/application"
 )
 
 func TestMain(m *testing.M) {
