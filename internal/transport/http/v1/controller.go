@@ -2,7 +2,8 @@ package v1
 
 import (
 	"context"
-	"github.com/BigDwarf/testci/internal/model"
+
+	"github.com/YagorX/go-service-ci/internal/model"
 	"github.com/labstack/echo/v4"
 )
 

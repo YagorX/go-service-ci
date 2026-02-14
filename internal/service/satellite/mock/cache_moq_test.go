@@ -5,8 +5,8 @@ package mock
 
 import (
 	"context"
-	"github.com/BigDwarf/testci/internal/service/cache"
-	"github.com/BigDwarf/testci/internal/service/satellite"
+	"github.com/YagorX/go-service-ci/internal/service/cache"
+	"github.com/YagorX/go-service-ci/internal/service/satellite"
 	"sync"
 	"time"
 )

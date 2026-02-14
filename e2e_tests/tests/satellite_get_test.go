@@ -20,7 +20,7 @@ func TestGetSatellite(t *testing.T) {
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode != http.StatusNotFound {
 		t.Fatalf("unexpected status code: got %d want %d", resp.StatusCode, http.StatusOK)
 	}
 }

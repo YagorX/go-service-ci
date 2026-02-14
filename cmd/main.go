@@ -6,7 +6,7 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/BigDwarf/testci/internal/application"
+	"github.com/YagorX/go-service-ci/internal/application"
 
 	// #nosec G108
 	_ "net/http/pprof"

@@ -3,11 +3,12 @@ package satellite
 import (
 	"context"
 	"errors"
-	"github.com/BigDwarf/testci/internal/service/cache"
-	"github.com/redis/go-redis/v9"
 	"time"
 
-	"github.com/BigDwarf/testci/internal/model"
+	"github.com/YagorX/go-service-ci/internal/service/cache"
+	"github.com/redis/go-redis/v9"
+
+	"github.com/YagorX/go-service-ci/internal/model"
 )
 
 //go:generate moq -out mock/repository_moq_test.go -pkg mock . Repository

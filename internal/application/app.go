@@ -5,17 +5,17 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/BigDwarf/testci/internal/model"
-	"github.com/BigDwarf/testci/internal/repository/satellite"
-	"github.com/BigDwarf/testci/internal/service/cache"
+	"github.com/YagorX/go-service-ci/internal/model"
+	"github.com/YagorX/go-service-ci/internal/repository/satellite"
+	"github.com/YagorX/go-service-ci/internal/service/cache"
 	"github.com/redis/go-redis/v9"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
 
-	"github.com/BigDwarf/testci/internal/config"
-	satelliteService "github.com/BigDwarf/testci/internal/service/satellite"
-	v1 "github.com/BigDwarf/testci/internal/transport/http/v1"
+	"github.com/YagorX/go-service-ci/internal/config"
+	satelliteService "github.com/YagorX/go-service-ci/internal/service/satellite"
+	v1 "github.com/YagorX/go-service-ci/internal/transport/http/v1"
 )
 
 type App struct {

@@ -1,4 +1,5 @@
-module github.com/BigDwarf/testci
+module github.com/YagorX/go-service-ci
+
 
 go 1.24
 

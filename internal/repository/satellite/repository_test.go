@@ -6,7 +6,7 @@ import (
 
 	"github.com/DATA-DOG/go-sqlmock"
 
-	"github.com/BigDwarf/testci/internal/model"
+	"github.com/YagorX/go-service-ci/internal/model"
 )
 
 //func GetFixture(t *testing.T, name string) []byte {

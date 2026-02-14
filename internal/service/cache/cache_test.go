@@ -3,10 +3,11 @@ package cache
 import (
 	"errors"
 	"fmt"
-	"github.com/BigDwarf/testci/internal/model"
-	"github.com/redis/go-redis/v9"
 	"testing"
 	"time"
+
+	"github.com/YagorX/go-service-ci/internal/model"
+	"github.com/redis/go-redis/v9"
 
 	"github.com/alicebob/miniredis/v2"
 )
