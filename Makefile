@@ -42,7 +42,7 @@ docker-compose-down:
 	docker compose down
 
 e2e-up-local:
-	./scripts/up-local.sh
+	bash ./scripts/up-local.sh
 
 e2e-down-local:
 	docker compose --env-file ./.env -f e2e_tests/docker-compose.e2e.yml --profile local down -v
@@ -54,4 +54,4 @@ e2e-down-ci:
 	docker compose --env-file ./.env -f e2e_tests/docker-compose.e2e.yml --profile ci down -v
 
 test-e2e-docker:
-	./scripts/up-e2e.sh
+	bash ./scripts/up-e2e.sh
