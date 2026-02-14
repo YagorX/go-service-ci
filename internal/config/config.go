@@ -22,7 +22,7 @@ type Database struct {
 	Hosts      string
 	User       string
 	UserSlaves string
-	Password   string
+	password   string
 	Port       int
 	SSLMode    string
 }
@@ -33,7 +33,7 @@ func (d *Database) GetDSN() string {
 		d.Port,
 		d.User,
 		d.Name,
-		d.Password,
+		d.password,
 		d.SSLMode,
 		d.Schema,
 	)
@@ -49,7 +49,7 @@ func NewDefaultConfig() *Config {
 			Port:     getEnvAsInt("APP_DB_PORT", 8432),
 			User:     getEnv("APP_DB_USER", "postgres"),
 			Name:     getEnv("APP_DB_NAME", "postgres"),
-			Password: getEnv("APP_DB_PASSWORD", "postgres"),
+			password: getEnv("APP_DB_PASSWORD", "postgres"),
 			SSLMode:  getEnv("APP_DB_SSLMODE", "disable"),
 			Schema:   getEnv("APP_DB_SCHEMA", "public"),
 		},
