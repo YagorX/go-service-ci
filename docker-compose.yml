@@ -1,53 +1,63 @@
-version: '3'
-
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8082:10080"
+    environment:
+      - APP_HTTP_ADDR=0.0.0.0:8082
+      - APP_DB_HOST=postgres
+      - APP_DB_PORT=5432
+      - APP_DB_USER=postgres
+      - APP_DB_PASSWORD=postgres
+      - APP_DB_NAME=postgres
+      - APP_DB_SCHEMA=public
+      - APP_DB_SSLMODE=disable
+      - APP_REDIS_ADDR=redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
   postgres:
-    image: postgres:16.2
+    image: postgres:16.8-alpine
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_DB=postgres
-      - PGPORT=7432
     ports:
-      - "7432:7432"
-    deploy:
-      resources:
-        limits:
-          cpus: '2'
-          memory: '4G'
+      - "8432:5432"
+    volumes:
+      - ./test/migrations:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   redis:
-    image: redis:7.0.14-alpine
+    image: redis:7.2-alpine
     hostname: redis
-    command: --port 7379
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
     healthcheck:
-      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      test: ["CMD", "redis-cli", "ping"]
     restart: always
     ports:
-      - "7379:7379"
-    deploy:
-      resources:
-        limits:
-          cpus: '2'
-          memory: '4G'
-    environment:
-      - REDIS_PASSWORD=password
-      - REDIS_PORT_NUMBER=7379
-      - REDIS_DATABASES=4
+      - "8379:6379"
 
   prometheus:
     image: prom/prometheus:v2.45.3
+    profiles: ["observability"]
     ports:
-      - 9090
+      - "9090:9090"
     volumes:
       - ./assets/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
   grafana:
     image: grafana/grafana:10.3.1
+    profiles: ["observability"]
     ports:
       - 3000:3000
     environment:

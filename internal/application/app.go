@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"net/http"
 
 	"github.com/YagorX/go-service-ci/internal/model"
 	"github.com/YagorX/go-service-ci/internal/repository/satellite"
@@ -28,6 +29,7 @@ type App struct {
 
 func NewApp() *App {
 	srv := echo.New()
+	srv.HTTPErrorHandler = httpErrorHandler
 
 	return &App{
 		srv: srv,
@@ -61,6 +63,10 @@ func (app *App) RegisterRoutes() {
 	db := app.Database(app.cfg.Database.GetDSN())
 	app.redisClient = redis.NewClient(&redis.Options{Addr: app.cfg.RedisAddr})
 	satelliteCache := cache.New[*model.Satellite](app.redisClient)
+
+	app.srv.GET("/", func(c echo.Context) error {
+		return c.HTML(http.StatusOK, "<h1>Service is running</h1>")
+	})
 
 	v1.NewController(g, satelliteService.NewService(satellite.NewRepository(db), satelliteCache))
 	app.registerHealthRoutes()

@@ -36,7 +36,7 @@ docker-run:
 	docker run --rm -p 8080:8080 $(IMAGE_NAME):$(IMAGE_TAG)
 
 docker-compose-up:
-	docker compose up -d
+	docker compose up -d --build
 
 docker-compose-down:
 	docker compose down

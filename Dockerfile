@@ -24,7 +24,7 @@ WORKDIR /app
 COPY --from=builder /app/app /app/app
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
-EXPOSE 10080
+EXPOSE 8082
 
 USER nonroot
 
