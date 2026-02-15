@@ -26,8 +26,7 @@ func TestGetSatellite(t *testing.T) {
 			t.Fatal(err)
 		}
 		defer resp.Body.Close()
-		// fmt.Println(resp.StatusCode)
-		if resp.StatusCode != http.StatusNotFound {
+		if resp.StatusCode != http.StatusOK {
 			t.Error(resp.StatusCode)
 		}
 	})

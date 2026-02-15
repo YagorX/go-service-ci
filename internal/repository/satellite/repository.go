@@ -30,7 +30,7 @@ func (r *repository) Create(ctx context.Context, s model.Satellite) error {
 func (r *repository) GetByName(ctx context.Context, name string) (*model.Satellite, error) {
 	var s model.Satellite
 
-	err := r.db.QueryRowContext(ctx, "SELECT * FROM satellite WHERE name = $1", name).Scan(&s.Name)
+	err := r.db.QueryRowContext(ctx, "SELECT name FROM satellite WHERE name = $1", name).Scan(&s.Name)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, ErrSatelliteNotFound

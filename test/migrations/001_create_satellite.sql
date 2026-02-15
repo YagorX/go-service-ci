@@ -3,3 +3,7 @@ CREATE TABLE IF NOT EXISTS satellite (
     name        TEXT NOT NULL UNIQUE,
     created_at  TIMESTAMP NOT NULL DEFAULT NOW()
 );
+
+INSERT INTO satellite (name)
+VALUES ('moon')
+ON CONFLICT (name) DO NOTHING;
