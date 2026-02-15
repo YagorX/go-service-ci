@@ -112,3 +112,73 @@ Docker-образ публикуется в GitHub Container Registry (ghcr.io).
 Работа сервиса подтверждена HTTP-запросами.
 
 ![alt text](image/image2-3.png)
+
+---
+
+## load/e2e Тестирование и оценка
+
+### Что добавлено
+
+- В CI/CD подключены тестовые этапы:
+  - `unit-test` (блокирующий перед упаковкой/публикацией образа)
+  - `integration-test`
+  - `e2e-test` (ручной запуск через `workflow_dispatch`)
+- Добавлен отдельный e2e-контур:
+  - `e2e_tests/docker-compose.common.yml`
+  - `e2e_tests/docker-compose.e2e.yml`
+  - `e2e_tests/Dockerfile_compose`
+  - `e2e_tests/tests/*`
+- Добавлен health-check endpoint: `GET /health/check`
+- Добавлен кастомный HTTP error handler для 404 (HTML/JSON поведение)
+- Добавлено нагрузочное тестирование в Apache JMeter:
+  - `load_tests/Summary Report.jmx`
+  - `load_tests/README.md`
+
+![alt text](image3.png)
+
+### Как запускать тесты
+
+- Unit:
+  - `make unit-test`
+- Integration:
+  - `make test-integration`
+- E2E локально:
+  - `make test-e2e-docker`
+- E2E в CI вручную:
+  - `Actions -> Go CI -> Run workflow -> run_e2e=true`
+- Нагрузочный тест:
+  - см. `load_tests/README.md`
+
+  ![alt text](image3-1.png)
+
+### Оценка результатов нагрузочного теста
+
+По результатам JMeter:
+
+- ошибок: `0.00%`
+- throughput: около `503 req/sec`
+- задержки: `p95 ~ 4 ms`, `p99 ~ 8 ms`
+
+![alt text](image3-2.png)
+
+Вывод:
+
+- при выбранном профиле нагрузки сервис стабильно обрабатывает запросы без ошибок;
+- заметных деградаций по latency на текущем стенде не наблюдается;
+- для финальной оценки рекомендуется дополнительно прогнать stress-профиль с большей конкуренцией.
+
+### Протокол испытаний
+
+Текстовый протокол испытаний:
+
+- `load_tests/TEST_PROTOCOL.md`
+
+### Какие скриншоты приложить в PR
+
+1. Успешный прогон CI с этапами `lint`, `unit-test`, `integration-test`, `security`, `build`, `login_push`.
+2. Ручной запуск workflow (`Run workflow`) и успешный `E2E tests (manual)`.
+3. Результаты JMeter (`Aggregate Report`) с ключевыми метриками.
+4. Проверка API:
+   - `GET /health/check` -> 200
+   - `GET /api/v1/satellite/moon` -> 200
+5. (Опционально) `docker compose ps` с поднятыми `app`, `postgres`, `redis`.
