@@ -134,7 +134,7 @@ Docker-образ публикуется в GitHub Container Registry (ghcr.io).
   - `load_tests/Summary Report.jmx`
   - `load_tests/README.md`
 
-![alt text](image3.png)
+![alt text](image/image3.png)
 
 ### Как запускать тесты
 
@@ -149,7 +149,7 @@ Docker-образ публикуется в GitHub Container Registry (ghcr.io).
 - Нагрузочный тест:
   - см. `load_tests/README.md`
 
-  ![alt text](image3-1.png)
+  ![alt text](image/image3-1.png)
 
 ### Оценка результатов нагрузочного теста
 
@@ -159,7 +159,7 @@ Docker-образ публикуется в GitHub Container Registry (ghcr.io).
 - throughput: около `503 req/sec`
 - задержки: `p95 ~ 4 ms`, `p99 ~ 8 ms`
 
-![alt text](image3-2.png)
+![alt text](image/image3-2.png)
 
 Вывод:
 
@@ -172,13 +172,3 @@ Docker-образ публикуется в GitHub Container Registry (ghcr.io).
 Текстовый протокол испытаний:
 
 - `load_tests/TEST_PROTOCOL.md`
-
-### Какие скриншоты приложить в PR
-
-1. Успешный прогон CI с этапами `lint`, `unit-test`, `integration-test`, `security`, `build`, `login_push`.
-2. Ручной запуск workflow (`Run workflow`) и успешный `E2E tests (manual)`.
-3. Результаты JMeter (`Aggregate Report`) с ключевыми метриками.
-4. Проверка API:
-   - `GET /health/check` -> 200
-   - `GET /api/v1/satellite/moon` -> 200
-5. (Опционально) `docker compose ps` с поднятыми `app`, `postgres`, `redis`.
